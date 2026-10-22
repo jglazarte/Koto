@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sin título — Koto</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <!-- ===================== BARRA DE HERRAMIENTAS ===================== -->
+  <div class="toolbar" id="toolbar">
+
+    <!-- Archivo -->
+    <div class="group menu-group">
+      <button type="button" class="menu-trigger" id="fileMenuBtn"
+              onclick="alternarMenuArchivo()" aria-haspopup="menu" aria-expanded="false"
+              title="Archivo">
+        Archivo
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+
+      <div class="menu" id="fileMenu" role="menu" aria-labelledby="fileMenuBtn" hidden>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(nuevoArchivo)">
+          Nuevo <span class="menu-shortcut">Ctrl+N</span>
+        </button>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(abrirArchivo)">
+          Abrir… <span class="menu-shortcut">Ctrl+O</span>
+        </button>
+        <div class="menu-sep" role="separator"></div>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(guardarArchivo)">
+          Guardar <span class="menu-shortcut">Ctrl+S</span>
+        </button>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(guardarComo)">
+          Guardar como… <span class="menu-shortcut">Ctrl+Shift+S</span>
+        </button>
+        <div class="menu-sep" role="separator"></div>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(exportarPDF)">Exportar PDF</button>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(imprimir)">
+          Imprimir… <span class="menu-shortcut">Ctrl+P</span>
+        </button>
+        <div class="menu-sep" role="separator"></div>
+        <button type="button" role="menuitem" onclick="accionMenuArchivo(cerrarDocumento)">Cerrar</button>
+      </div>
+    </div>
+
+    <!-- Fuente -->
+    <div class="group">
+      <select id="fontFamily" title="Fuente" onchange="aplicarFuente(this.value)">
+        <option value="">Fuente</option>
+        <option value="Arial">Arial</option>
+        <option value="Calibri">Calibri</option>
+        <option value="Cambria">Cambria</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Helvetica">Helvetica</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Trebuchet MS">Trebuchet MS</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+
+      <select id="fontSize" title="Tamaño de fuente" onchange="aplicarTamano(this.value)">
+        <option value="">Tamaño</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="14">14</option>
+        <option value="16">16</option>
+        <option value="18">18</option>
+        <option value="20">20</option>
+        <option value="24">24</option>
+        <option value="28">28</option>
+        <option value="32">32</option>
+        <option value="36">36</option>
+        <option value="48">48</option>
+      </select>
+    </div>
+
+    <!-- Interlineado -->
+    <div class="group menu-group">
+      <button type="button" class="menu-trigger" id="spacingMenuBtn"
+              onclick="alternarMenuInterlineado()" aria-haspopup="menu" aria-expanded="false"
+              title="Interlineado">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h10M3 12h10M3 18h10"/>
+          <path d="M19 4v16"/>
+          <path d="m16 7 3-3 3 3"/>
+          <path d="m16 17 3 3 3-3"/>
+        </svg>
+      </button>
+
+      <div class="menu menu-interlineado" id="spacingMenu" role="menu"
+           aria-labelledby="spacingMenuBtn" hidden>
+        <button type="button" role="menuitemradio" aria-checked="false" data-spacing="1"
+                onclick="elegirInterlineado('1')">
+          1 <span class="menu-check" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" role="menuitemradio" aria-checked="true" data-spacing="1.5"
+                onclick="elegirInterlineado('1.5')">
+          1,5 <span class="menu-check" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" role="menuitemradio" aria-checked="false" data-spacing="2"
+                onclick="elegirInterlineado('2')">
+          2 <span class="menu-check" aria-hidden="true">✓</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Alineación -->
+    <div class="group">
+      <button type="button" id="btnLeft" onclick="exec('justifyLeft')" title="Alinear a la izquierda (Ctrl+Shift+L)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 5h18M3 9h12M3 13h18M3 17h12"/>
+        </svg>
+      </button>
+      <button type="button" id="btnCenter" onclick="exec('justifyCenter')" title="Centrar (Ctrl+Shift+E)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 5h18M6 9h12M3 13h18M6 17h12"/>
+        </svg>
+      </button>
+      <button type="button" id="btnRight" onclick="exec('justifyRight')" title="Alinear a la derecha (Ctrl+Shift+R)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 5h18M9 9h12M3 13h18M9 17h12"/>
+        </svg>
+      </button>
+      <button type="button" id="btnJustify" onclick="exec('justifyFull')" title="Justificar (Ctrl+Shift+J)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 5h18M3 9h18M3 13h18M3 17h18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Estilos de texto -->
+    <div class="group">
+      <button type="button" id="btnBold" onclick="exec('bold')" title="Negrita (Ctrl+B)"><b>B</b></button>
+      <button type="button" id="btnItalic" onclick="exec('italic')" title="Cursiva (Ctrl+I)"><i>I</i></button>
+      <button type="button" id="btnUnderline" onclick="exec('underline')" title="Subrayado (Ctrl+U)"><u>U</u></button>
+      <button type="button" id="btnSub" onclick="exec('subscript')" title="Subíndice">X<sub>2</sub></button>
+      <button type="button" id="btnSup" onclick="exec('superscript')" title="Superíndice">X<sup>2</sup></button>
+      <button type="button" onclick="insertarEnlace()" title="Insertar enlace (Ctrl+K)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="group">
+      <button type="button" onclick="abrirBuscar(false)" title="Buscar y reemplazar (Ctrl+F)" aria-label="Buscar y reemplazar">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20 20-3.5-3.5"/>
+        </svg>
+      </button>
+      <button type="button" id="btnFocus" onclick="alternarEnfoque()" title="Modo enfoque (Ctrl+Shift+F)" aria-label="Modo enfoque">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Identidad -->
+    <div class="brand" title="Koto">
+      <span class="brand-mark" aria-hidden="true">言</span>
+      <span class="brand-name">Koto</span>
+    </div>
+
+  </div>
+
+  <!-- ===================== HOJA / EDITOR ===================== -->
+  <main class="workspace">
+    <div class="page" id="page">
+      <div id="editor"
+           contenteditable="true"
+           spellcheck="true"
+           role="textbox"
+           aria-multiline="true"
+           data-placeholder="Escribe aquí..."></div>
+    </div>
+  </main>
+
+  <!-- Barra inferior de zoom -->
+  <footer class="statusbar">
+    <span class="autosave-status" id="autosaveStatus" aria-live="polite"></span>
+    <div class="zoom-controls">
+      <button type="button" onclick="cambiarZoom(-10)" title="Alejar">−</button>
+      <input type="range" id="zoomRange" min="50" max="400" step="1" value="100"
+             aria-label="Zoom" oninput="setZoom(this.value)">
+      <button type="button" onclick="cambiarZoom(10)" title="Acercar">+</button>
+      <span id="zoomLabel">100%</span>
+      <button type="button" onclick="ajustarAncho()" title="Ajustar la página al ancho de la ventana">Ajustar ancho</button>
+    </div>
+  </footer>
+
+  <!-- Buscador flotante -->
+  <div class="findbar" id="findBar" hidden role="search" aria-label="Buscar y reemplazar">
+    <input type="text" id="findText" placeholder="Buscar" autocomplete="off" aria-label="Buscar">
+    <span class="find-count" id="findCount" aria-live="polite"></span>
+    <button type="button" onclick="buscarAnterior()" title="Anterior (Mayús+Enter)" aria-label="Anterior">↑</button>
+    <button type="button" onclick="buscarSiguiente()" title="Siguiente (Enter)" aria-label="Siguiente">↓</button>
+    <span class="find-sep"></span>
+    <input type="text" id="replaceText" placeholder="Reemplazar" autocomplete="off" aria-label="Texto de reemplazo">
+    <button type="button" onclick="reemplazarActual()" title="Reemplazar la coincidencia actual">Reemplazar</button>
+    <button type="button" onclick="reemplazarTodo()" title="Reemplazar todas las coincidencias">Todo</button>
+    <button type="button" class="find-close" onclick="cerrarBuscar()" title="Cerrar (Esc)" aria-label="Cerrar">×</button>
+  </div>
+
+  <!-- Salida del modo enfoque y preferencia de inicio -->
+  <div id="focusExit">
+    <label class="focus-default" title="Abrir siempre en modo enfoque">
+      <input type="checkbox" id="focusDefault" onchange="cambiarPreferenciaEnfoque(this.checked)">
+      Abrir siempre
+    </label>
+    <button type="button" onclick="salirEnfoque()" title="Salir del modo enfoque (Esc)">
+      Salir <span>Esc</span>
+    </button>
+  </div>
+
+  <!-- Diálogo: recuperar copia local -->
+  <div class="modal-overlay" id="recoveryDialog" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recoveryTitle">
+      <h2 id="recoveryTitle">Recuperar documento</h2>
+      <p class="recovery-text" id="recoveryText"></p>
+      <div class="modal-actions">
+        <button type="button" onclick="descartarRecuperacion()">Descartar</button>
+        <button type="button" class="primary" id="recoveryAccept" onclick="recuperarDocumento()">Recuperar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diálogo: insertar / editar enlace -->
+  <div class="modal-overlay" id="linkDialog" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="linkDialogTitle">
+      <h2 id="linkDialogTitle">Insertar enlace</h2>
+
+      <label class="field">
+        <span>Nombre</span>
+        <input type="text" id="linkName" placeholder="Texto visible del enlace" autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span>Enlace</span>
+        <input type="text" id="linkUrl" placeholder="https://ejemplo.com" autocomplete="off">
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" onclick="cancelarEnlace()">Cancelar</button>
+        <button type="button" class="primary" id="linkAccept" onclick="aceptarEnlace()">Insertar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diálogo: guardar como (navegadores sin selector nativo) -->
+  <div class="modal-overlay" id="saveDialog" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="saveDialogTitle">
+      <h2 id="saveDialogTitle">Guardar como</h2>
+
+      <label class="field">
+        <span>Nombre del archivo</span>
+        <input type="text" id="saveFileName" placeholder="documento" autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span>Formato</span>
+        <select id="saveFileFormat">
+          <option value="odt">Documento ODT (.odt)</option>
+          <option value="docx">Documento Word (.docx)</option>
+          <option value="html">Página HTML (.html)</option>
+          <option value="txt">Texto plano (.txt)</option>
+        </select>
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" onclick="cerrarDialogoGuardar(null)">Cancelar</button>
+        <button type="button" class="primary" onclick="aceptarDialogoGuardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías incluidas localmente (funciona sin internet) -->
+  <script src="vendor/jszip.min.js"></script>
+  <script src="vendor/mammoth.browser.min.js"></script>
+  <script src="vendor/html2canvas.min.js"></script>
+  <script src="vendor/jspdf.umd.min.js"></script>
+
+  <script src="js/formatos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

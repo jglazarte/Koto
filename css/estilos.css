@@ -1,0 +1,535 @@
+:root{
+    --bg:#f1f3f4;
+    --toolbar:#e8f2fb;          /* celeste claro del menú */
+    --border:#cfe0ef;
+    --btn-bg:#ffffff;
+    --btn-hover:#f2f8fe;
+    --active:#cfe3fb;
+    --active-border:#1a73e8;
+    --active-text:#174ea6;
+    --text:#202124;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body{ display:flex; flex-direction:column; }
+
+  /* ---------- Barra de herramientas ---------- */
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:4px;
+    padding:8px 12px;
+    background:var(--toolbar);
+    border-bottom:1px solid var(--border);
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+    z-index:10;
+  }
+
+  .group{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:2px 8px;
+    border-right:1px solid var(--border);
+  }
+  .group:last-child{ border-right:none; }
+
+  .toolbar button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:32px;
+    height:30px;
+    padding:0 9px;
+    border:1px solid var(--border);
+    border-radius:5px;
+    background:var(--btn-bg);
+    color:var(--text);
+    font-size:13px;
+    line-height:1;
+    cursor:pointer;
+    user-select:none;
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .toolbar button:hover{ background:var(--btn-hover); border-color:#accbe6; }
+  .toolbar button:active{ background:#e3e6e9; }
+  .toolbar button.active{
+    background:var(--active);
+    border-color:var(--active-border);
+    color:var(--active-text);
+  }
+  .toolbar button svg{ display:block; }
+
+  .toolbar select{
+    height:30px;
+    padding:0 6px;
+    border:1px solid var(--border);
+    border-radius:5px;
+    background:#fff;
+    color:var(--text);
+    font-size:13px;
+    cursor:pointer;
+  }
+  .toolbar select:hover{ border-color:#accbe6; }
+  .toolbar select:focus{ outline:2px solid var(--active); outline-offset:1px; }
+
+  /* ---------- Menús desplegables ---------- */
+  .menu-group{ position:relative; }
+  .toolbar .menu-trigger{ gap:5px; padding-right:7px; font-weight:500; }
+  .toolbar .menu-trigger[aria-expanded="true"]{
+    background:var(--active);
+    border-color:var(--active-border);
+    color:var(--active-text);
+  }
+  .menu{
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0;
+    z-index:90;
+    display:flex;
+    flex-direction:column;
+    min-width:232px;
+    padding:5px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fff;
+    box-shadow:0 10px 28px rgba(0,0,0,.16);
+  }
+  .menu[hidden]{ display:none; }
+  .toolbar .menu button{
+    width:100%;
+    height:32px;
+    min-width:0;
+    padding:0 9px;
+    border:none;
+    border-radius:5px;
+    background:transparent;
+    justify-content:space-between;
+    gap:18px;
+    text-align:left;
+  }
+  .toolbar .menu button:hover{ background:var(--btn-hover); border-color:transparent; }
+  .toolbar .menu button:active{ background:#e8f0fb; }
+  .menu-shortcut{ font-size:11.5px; color:#80868b; letter-spacing:.02em; }
+  .menu-sep{ height:1px; margin:5px 6px; background:var(--border); }
+
+  .menu-interlineado{ min-width:96px; }
+  #spacingMenuBtn{ padding:0 8px; }
+  .toolbar .menu-interlineado button{ justify-content:flex-start; gap:6px; }
+  .menu-check{
+    visibility:hidden;
+    margin-left:2px;
+    color:var(--active-border);
+    font-weight:600;
+  }
+  .menu button[aria-checked="true"] .menu-check{ visibility:visible; }
+
+  /* ---------- Identidad ---------- */
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-left:auto;
+    padding-left:14px;
+    user-select:none;
+  }
+  .brand-mark{
+    display:grid;
+    place-items:center;
+    width:28px;
+    height:28px;
+    border-radius:7px;
+    background:#1e3a5f;
+    color:#fff;
+    font-family:"Noto Serif CJK JP", "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    font-size:17px;
+    line-height:1;
+  }
+  .brand-name{
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.02em;
+    color:#33475b;
+  }
+
+  /* ---------- Barra inferior de zoom ---------- */
+  .statusbar{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    padding:6px 14px;
+    background:var(--toolbar);
+    border-top:1px solid var(--border);
+    z-index:10;
+  }
+  .autosave-status{
+    margin-right:auto;
+    min-width:0;
+    max-width:45vw;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:12px;
+    color:#5f6368;
+  }
+  .autosave-status:empty{ display:none; }
+  .zoom-controls{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .statusbar button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:26px;
+    min-width:28px;
+    padding:0 9px;
+    border:1px solid var(--border);
+    border-radius:5px;
+    background:var(--btn-bg);
+    color:var(--text);
+    font-size:13px;
+    cursor:pointer;
+  }
+  .statusbar button:hover{ background:var(--btn-hover); border-color:#accbe6; }
+  #zoomRange{
+    width:150px;
+    accent-color:var(--active-border);
+    cursor:pointer;
+  }
+  #zoomLabel{
+    min-width:44px;
+    text-align:right;
+    font-size:12px;
+    color:#3c4043;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- Área de trabajo ---------- */
+  .workspace{
+    flex:1;
+    min-height:0;
+    overflow:auto;
+    padding:22px 12px 40px;
+  }
+
+  /* Hoja A4: 21 cm de ancho (ancho de página) */
+  .page{
+    width:21cm;
+    min-height:29.7cm;
+    margin:0 auto;
+    padding:2cm;
+    background:#ffffff;
+    box-shadow:0 1px 4px rgba(0,0,0,.16), 0 8px 28px rgba(0,0,0,.08);
+  }
+
+  #editor{
+    width:100%;
+    min-height:calc(29.7cm - 4cm);
+    outline:none;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12pt;
+    line-height:1.5;          /* interlineado por defecto: 1,5 */
+    tab-size:4;
+    -moz-tab-size:4;
+    color:#000;
+    white-space:pre-wrap;
+    overflow-wrap:break-word;
+    word-wrap:break-word;
+    caret-color:#000;
+  }
+  #editor:empty::before{
+    content:attr(data-placeholder);
+    color:#9aa0a6;
+    pointer-events:none;
+  }
+
+  /* ---------- Enlaces del documento ---------- */
+  #editor a{
+    color:#0b57d0;
+    text-decoration:underline;
+    cursor:pointer;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  /* ---------- Tablas importadas ---------- */
+  #editor table{
+    border-collapse:collapse;
+    width:100%;
+    margin:0.5em 0;
+  }
+  #editor td,
+  #editor th{
+    border:1px solid #c7c7c7;
+    padding:4px 6px;
+    vertical-align:top;
+  }
+
+  /* ---------- Buscador ---------- */
+  .findbar{
+    position:fixed;
+    right:16px;
+    bottom:52px;
+    z-index:80;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    max-width:calc(100vw - 32px);
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .findbar[hidden]{ display:none; }
+  .findbar input[type="text"]{
+    height:30px;
+    padding:0 8px;
+    border:1px solid var(--border);
+    border-radius:5px;
+    background:#fff;
+    color:var(--text);
+    font-size:13px;
+    font-family:inherit;
+  }
+  .findbar input[type="text"]:focus{
+    outline:2px solid var(--active);
+    outline-offset:1px;
+    border-color:var(--active-border);
+  }
+  #findText{ width:160px; }
+  #replaceText{ width:150px; }
+  .findbar button{
+    height:30px;
+    min-width:30px;
+    padding:0 8px;
+    border:1px solid var(--border);
+    border-radius:5px;
+    background:#fff;
+    color:var(--text);
+    font-size:13px;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .findbar button:hover{ background:var(--btn-hover); border-color:#accbe6; }
+  .findbar .find-close{
+    border:none;
+    background:transparent;
+    padding:0 4px;
+    font-size:18px;
+    color:#5f6368;
+  }
+  .findbar .find-close:hover{ background:#f1f3f4; color:#202124; }
+  .find-count{
+    min-width:68px;
+    text-align:center;
+    font-size:12px;
+    color:#5f6368;
+    font-variant-numeric:tabular-nums;
+  }
+  .find-count.no-results{ color:#b3261e; }
+  .find-sep{
+    width:1px;
+    height:22px;
+    margin:0 2px;
+    background:var(--border);
+  }
+  ::highlight(buscar){ background-color:#fff1a8; }
+  ::highlight(buscar-actual){ background-color:#ffd54f; color:inherit; }
+
+  /* ---------- Modo enfoque ---------- */
+  .modo-enfoque .toolbar,
+  .modo-enfoque .statusbar{ display:none; }
+  .modo-enfoque .workspace{ padding-top:34px; }
+  #focusExit{
+    position:fixed;
+    top:12px;
+    right:16px;
+    z-index:70;
+    display:none;
+    align-items:center;
+    gap:10px;
+    height:32px;
+    padding:0 5px 0 11px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    background:rgba(255,255,255,.92);
+    color:#5f6368;
+    font-family:inherit;
+    font-size:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    opacity:.55;
+    transition:opacity .15s ease, background .15s ease;
+  }
+  .modo-enfoque #focusExit{ display:inline-flex; }
+  #focusExit:hover{ opacity:1; background:#fff; }
+  .focus-default{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    white-space:nowrap;
+    cursor:pointer;
+    user-select:none;
+  }
+  .focus-default input{
+    width:13px;
+    height:13px;
+    margin:0;
+    accent-color:var(--active-border);
+    cursor:pointer;
+  }
+  #focusExit button{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    height:24px;
+    padding:0 8px;
+    border:none;
+    border-radius:999px;
+    background:#f1f3f4;
+    color:#3c4043;
+    font-family:inherit;
+    font-size:12px;
+    cursor:pointer;
+  }
+  #focusExit button:hover{ background:#e3e6e9; }
+  #focusExit button span{
+    padding:1px 5px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    font-size:11px;
+    color:#5f6368;
+  }
+
+  /* ---------- Diálogos ---------- */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    background:rgba(32,33,36,.38);
+    z-index:1000;
+  }
+  .modal-overlay[hidden]{ display:none; }
+
+  .modal{
+    width:min(420px, 100%);
+    padding:22px 24px;
+    border-radius:10px;
+    background:#fff;
+    box-shadow:0 14px 44px rgba(0,0,0,.28);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text);
+  }
+  .modal h2{
+    margin:0 0 16px;
+    font-size:18px;
+    font-weight:600;
+  }
+  .recovery-text{
+    margin:0;
+    color:#3c4043;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .modal .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-bottom:13px;
+    font-size:13px;
+    color:#3c4043;
+  }
+  .modal .field input,
+  .modal .field select{
+    height:36px;
+    padding:0 10px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:#fff;
+    color:var(--text);
+    font-size:14px;
+  }
+  .modal .field input:focus,
+  .modal .field select:focus{
+    outline:2px solid var(--active);
+    outline-offset:1px;
+    border-color:var(--active-border);
+  }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:20px;
+  }
+  .modal-actions button{
+    height:36px;
+    padding:0 18px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:#fff;
+    color:var(--text);
+    font-size:14px;
+    cursor:pointer;
+  }
+  .modal-actions button:hover{ background:var(--btn-hover); }
+  .modal-actions button.primary{
+    background:var(--active-border);
+    border-color:var(--active-border);
+    color:#fff;
+  }
+  .modal-actions button.primary:hover{ background:#1765cc; }
+
+  /* ---------- Impresión ---------- */
+  @media print{
+    @page{ size:A4; margin:2cm; }
+    html,body{ height:auto; overflow:visible; background:#fff; }
+    body{ display:block; }
+    .toolbar,
+    .statusbar,
+    .findbar,
+    #focusExit,
+    .modal-overlay{ display:none !important; }
+    .workspace{ overflow:visible; padding:0; }
+    .page{
+      width:auto;
+      min-height:auto;
+      margin:0;
+      padding:0;
+      box-shadow:none;
+      zoom:1 !important;
+    }
+    #editor{ min-height:0; }
+  }
+
+  @media (max-width:760px){
+    .findbar{
+      left:8px;
+      right:8px;
+      bottom:46px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    #findText,
+    #replaceText{ width:130px; }
+    .find-count{ min-width:54px; }
+  }
