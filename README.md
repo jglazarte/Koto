@@ -2,6 +2,8 @@
 
 Koto es un procesador de textos ligero inspirado en Microsoft Word. Funciona directamente en el navegador, sin instalar nada y sin conexión a internet: basta con copiar esta carpeta completa y abrir `index.html`.
 
+![Screenshot](https://github.com/jglazarte/Koto/blob/master/koto.png)
+
 ## Cómo ejecutarlo
 
 1. Copia la carpeta completa a cualquier PC.
